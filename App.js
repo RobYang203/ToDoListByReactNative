@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-
+// import ListContainer from "./container/ListContainer/index"
 import React from 'react';
 import {
   SafeAreaView,
@@ -15,21 +15,14 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
+import ListContainer from "./container/ListContainer";
 
 
 const App = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-            
-        
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <SafeAreaView>
+      <ListContainer />
+    </SafeAreaView>
   );
 };
 
