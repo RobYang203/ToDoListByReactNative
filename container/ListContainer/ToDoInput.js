@@ -6,21 +6,28 @@ import {
   View,
   Text,
 } from 'react-native';
-
+import { createItem } from '../../fakeApi'
 export default function ToDoInput() {
   const [textValue, setTextValue] = useState('');
+
   const onInputChange = (text) => {
     setTextValue(text);
   };
-  const onButtonClick = (e) => {
-    alert(textValue)
+  const onButtonClick = async(e) => {
+    if(textValue === ""){
+      alert("不得為空值");
+      return;
+    }
+
+    const res = await createItem(textValue);
+    
   } 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         placeholder="請輸入..."
-        onChange={onInputChange}
+        onChangeText={onInputChange}
         value={textValue}
       />
       <TouchableOpacity style={styles.button} onPress={onButtonClick}>
@@ -35,7 +42,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    height: 100,
+    height: 30,
     justifyContent: 'center',
   },
   textInput: {
