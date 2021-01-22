@@ -6,12 +6,8 @@
  * @flow strict-local
  */
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native';
-import ListContainer from "./container/ListContainer";
-
+import {SafeAreaView, StyleSheet} from 'react-native';
+import ListContainer from './container/ListContainer';
 
 const App = () => {
   return (
@@ -20,6 +16,5 @@ const App = () => {
     </SafeAreaView>
   );
 };
-
 
 export default App;

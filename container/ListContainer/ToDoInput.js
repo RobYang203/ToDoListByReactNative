@@ -6,22 +6,25 @@ import {
   View,
   Text,
 } from 'react-native';
-import { createItem } from '../../fakeApi'
-export default function ToDoInput() {
+import {createNewTodo} from '../../fakeApi';
+export default function ToDoInput({handleTodoChange}) {
   const [textValue, setTextValue] = useState('');
 
   const onInputChange = (text) => {
     setTextValue(text);
   };
-  const onButtonClick = async(e) => {
-    if(textValue === ""){
-      alert("不得為空值");
+  const onButtonClick = async (e) => {
+    if (textValue === '') {
+      alert('不得為空值');
       return;
     }
 
-    const res = await createItem(textValue);
-    
-  } 
+    const res = await createNewTodo(textValue);
+    if (res.type === 'success') {
+      setTextValue('');
+      if (typeof handleTodoChange === 'function') handleTodoChange(true);
+    }
+  };
   return (
     <View style={styles.container}>
       <TextInput

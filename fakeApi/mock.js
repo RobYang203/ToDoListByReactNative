@@ -16,11 +16,12 @@ export const insertItem = (text = '') => {
   const item = {
     todo: text,
     date: new Date().toString(),
-    status: TODO,
+    status: PROCESSING,
     id: fakeData.length + 1,
   };
 
   fakeData.push(item);
+  return true;
 };
 
 export const updateItem = (id = -1, text = '') => {
@@ -45,7 +46,7 @@ export const deleteItem = (id = -1) => {
   return true;
 };
 
-export const changeStatus = (id = -1, status = TODO) => {
+export const changeStatus = (id = -1, status = PROCESSING) => {
   if (id === -1) return false;
   const results = fakeData.filter((item) => {
     return item.id === id;

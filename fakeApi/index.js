@@ -22,7 +22,6 @@ const apiFormat = (type, data) => {
 export const createNewTodo = (text) => {
   return new Promise((resolve, reject) => {
     const isSuccess = insertItem(text);
-
     setTimeout(() => {
       resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
     }, DELAYTIME);
@@ -56,7 +55,7 @@ export const updateById = (id, text) => {
   });
 };
 
-export const setTodoIsFinish = (id) => {
+export const setTodoItemIsFinish = (id) => {
   return new Promise((resolve, reject) => {
     const isSuccess = changeStatus(id, FINISH);
 
@@ -66,7 +65,7 @@ export const setTodoIsFinish = (id) => {
   });
 };
 
-export const setToDoIsProcessing = (id) => {
+export const setToDoItemIsProcessing = (id) => {
   return new Promise((resolve, reject) => {
     const isSuccess = changeStatus(id, PROCESSING);
 
@@ -76,7 +75,7 @@ export const setToDoIsProcessing = (id) => {
   });
 };
 
-export const setToDoIsRemove = (id) => {
+export const setToDoItemIsRemove = (id) => {
   return new Promise((resolve, reject) => {
     const isSuccess = changeStatus(id, REMOVE);
 

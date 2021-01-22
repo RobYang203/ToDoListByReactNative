@@ -1,63 +1,46 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import React, {useEffect, useReducer} from 'react';
+import {View} from 'react-native';
+import {REFRESHLIST} from './config/actionType';
 import ToDoInput from './ToDoInput';
+import {refreshTodoList} from './config/action';
+import {readAll} from '../../fakeApi';
+import TodoList from './TodoList';
+const initState = {
+  list: [],
+};
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+const reducer = (state, action) => {
+  const {payload} = action;
+  switch (action.type) {
+    case REFRESHLIST:
+      return {
+        ...state,
+        list: payload.list,
+      };
+    default:
+      return state;
+  }
+};
 
-const Item = ({item, onPress, style}) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
-  </TouchableOpacity>
-);
 export default () => {
-  const [selectedId, setSelectedId] = useState(null);
-  const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+  const [todo, dispatch] = useReducer(reducer, initState);
+  const {list} = todo;
 
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        style={{backgroundColor}}
-      />
-    );
+  const refreshList = async () => {
+    const res = await readAll();
+    dispatch(refreshTodoList(res.data));
   };
+  const handleTodoChange = () => {
+    refreshList();
+  };
+
+  useEffect(() => {
+    refreshList();
+  }, []);
   return (
     <View>
-      <ToDoInput />
-      <View style={{borderWidth:1 , borderColor:"#000"}}>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-      </View>
+      <ToDoInput handleTodoChange={handleTodoChange} />
+      <TodoList list={list} handleTodoChange={handleTodoChange} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
