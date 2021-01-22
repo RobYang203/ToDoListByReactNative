@@ -1,100 +1,87 @@
-const fakeData = [];
-
-const saveItemMode = {
-  todo: '',
-  date: '',
-  id: 0,
-};
-
-const createNewSaveItemFormat = (todo, date, id) => {
-  const newItem = Object.assign({}, saveItemMode);
-
-  return {
-    ...newItem,
-    todo,
-    date,
-    id,
-  };
-};
+import {
+  insertItem,
+  search,
+  updateItem,
+  changeStatus,
+  FINISH,
+  PROCESSING,
+  REMOVE,
+} from './mock';
+const DELAYTIME = 500;
 
 const SUCCESS = 'success';
 const FAILURE = 'failure';
-const returnInfoFormat = (type, data) => {
+
+const apiFormat = (type, data) => {
   return {
     type,
     data,
   };
 };
-export const createItem = (text) => {
-  return new Promise((resolve, reject) => {
-    if (!text) {
-      resolve(returnInfoFormat(FAILURE));
-      return;
-    }
-    const id = fakeData.length + 1;
-    const todo = text;
-    const date = new Date().toDateString();
-    const item = createNewSaveItemFormat(todo, date, id);
 
-    fakeData.push(item);
+export const createNewTodo = (text) => {
+  return new Promise((resolve, reject) => {
+    const isSuccess = insertItem(text);
+
     setTimeout(() => {
-      resolve(returnInfoFormat(SUCCESS));
-    }, 100);
+      resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
+    }, DELAYTIME);
   });
 };
 
 export const readAll = () => {
   return new Promise((resolve, reject) => {
+    const res = search();
     setTimeout(() => {
-      resolve(returnInfoFormat(SUCCESS, fakeData));
-    }, 100);
+      resolve(apiFormat(SUCCESS, res));
+    }, DELAYTIME);
   });
 };
 
-export const readById = (id) => {
+export const readByStatus = (status) => {
   return new Promise((resolve, reject) => {
-    const results = fakeData.filter((item) => {
-      return item.id === id;
-    });
-
+    const res = search(status);
     setTimeout(() => {
-      if (results.length > 0) {
-        resolve(returnInfoFormat(SUCCESS, results[0]));
-      } else {
-        resolve(returnInfoFormat(FAILURE));
-      }
-    }, 100);
+      resolve(apiFormat(SUCCESS, res));
+    }, DELAYTIME);
   });
 };
 
 export const updateById = (id, text) => {
   return new Promise((resolve, reject) => {
-    const results = fakeData.filter((item) => {
-      return item.id === id;
-    });
-
+    const isSuccess = updateItem(id, text);
     setTimeout(() => {
-      if (results.length > 0) {
-        results[0].todo = text;
-        resolve(returnInfoFormat(SUCCESS));
-      } else {
-        resolve(returnInfoFormat(FAILURE));
-      }
-    }, 100);
+      resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
+    }, DELAYTIME);
   });
 };
 
-export const deleteById = (id) => {
+export const setTodoIsFinish = (id) => {
   return new Promise((resolve, reject) => {
-    const id = fakeData.findIndex((item) => {
-      return item.id === id;
-    });
+    const isSuccess = changeStatus(id, FINISH);
 
     setTimeout(() => {
-      if (id !== -1) {
-        fakeData.splice(id, 1);
-      }
-      resolve(returnInfoFormat(SUCCESS));
-    }, 100);
+      resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
+    }, DELAYTIME);
+  });
+};
+
+export const setToDoIsProcessing = (id) => {
+  return new Promise((resolve, reject) => {
+    const isSuccess = changeStatus(id, PROCESSING);
+
+    setTimeout(() => {
+      resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
+    }, DELAYTIME);
+  });
+};
+
+export const setToDoIsRemove = (id) => {
+  return new Promise((resolve, reject) => {
+    const isSuccess = changeStatus(id, REMOVE);
+
+    setTimeout(() => {
+      resolve(apiFormat(isSuccess ? SUCCESS : FAILURE));
+    }, DELAYTIME);
   });
 };
