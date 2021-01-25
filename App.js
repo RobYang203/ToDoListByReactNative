@@ -7,12 +7,12 @@
  */
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import ListContainer from './container/ListContainer';
+import Container from './Container';
 
 const App = () => {
   return (
     <SafeAreaView>
-      <ListContainer />
+      <Container />
     </SafeAreaView>
   );
 };
